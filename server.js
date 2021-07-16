@@ -7,10 +7,9 @@ const { urlencoded } = require('body-parser');
 const { createResponse } = require('./createResponse.js')
 const { getSearchParams } = require('./getSearchParams.js')
 
-
 const app = express();
 app.use(urlencoded({ extended: false }));
-
+const PORT = process.env.PORT || 80;
 const URL = 'https://project-scrape.herokuapp.com/api/v1/results';
 
 app.post('/sms', async (req, res) => {
@@ -33,6 +32,6 @@ console.log(message)
   res.end(twiml.toString());
 });
 
-http.createServer(app).listen(80, () => {
-  console.log('Express server listening on port 80');
+http.createServer(app).listen(PORT, () => {
+  console.log(`Express server listening on port ${PORT}`);
 });
