@@ -16,10 +16,14 @@ app.post('/sms', async (req, res) => {
   
   const params = getSearchAndCity(req.body.Body)
   const twiml = new MessagingResponse();
- 
+ try {
   const response =  await fetch(`${URL}/${params[0]}/${params[1]}`, {
-     method: 'GET'
+    method: 'GET'
 })
+ } catch (error) {
+   console.error(error)
+ }
+ 
 
 const items = await response.json()
 const slicedItems = items.slice(0, 3)
