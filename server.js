@@ -29,8 +29,8 @@ app.post('/sms', async (req, res) => {
         
         message = 'Please enter a valid search term or city'
         twiml.message(message);
-        res.writeHead(200, { 'Content-Type': 'text/xml' });
-        res.end(twiml.toString());
+        // res.writeHead(200, { 'Content-Type': 'text/xml' });
+        // res.end(twiml.toString());
        
       } else {
         
@@ -38,17 +38,18 @@ app.post('/sms', async (req, res) => {
         console.log(items)
         message = createResponse(items.slice(0, 5), 'chair', 'portland');
         twiml.message(message);
-        res.writeHead(200, { 'Content-Type': 'text/xml' });
-        res.end(twiml.toString());
+        // res.writeHead(200, { 'Content-Type': 'text/xml' });
+        // res.end(twiml.toString());
       }
      
     } else {
       message = 'Please respond with "Looking for a <item> in <your city name> " to receive a lit of local listings '
       console.log(message);
       twiml.message(message);
+      
+    }
       res.writeHead(200, { 'Content-Type': 'text/xml' });
       res.end(twiml.toString());
-    }
 
   } 
   catch (error) {
