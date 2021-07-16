@@ -8,23 +8,19 @@ const { getSearchParams } = require("./utils/getSearchParams.js");
 const { checkValidMessage } = require("./utils/checkValidMessage.js");
 
 const app = express();
-app.use(
-  urlencoded({
-    extended: false,
-  })
-);
-
+app.use(urlencoded({extended: false,}));
+//double check this
 const URL = "https://project-scrape.herokuapp.com/api/v1/results";
 
 app.post("/sms", async (req, res) => {
-  console.log("hello");
   let message;
-  const params = getSearchParams(req.body.Body);
+  const [searchTerm, city] = getSearchParams(req.body.Body);
+  console.log(searchTerm, city)
   const twiml = new MessagingResponse();
 
   try {
     if (checkValidMessage(req.body.Body)) {
-      const response = await fetch(`${URL}/${params[0]}/${params[1]}`, {
+      const response = await fetch(`${URL}/${searchTerm}/${city}`, {
         method: "GET",
       });
 
@@ -33,14 +29,12 @@ app.post("/sms", async (req, res) => {
         twiml.message(message);
       } else {
         const items = await response.json();
-        console.log(items);
-        message = createResponse(items.slice(0, 5), "chair", "portland");
+        const 
+        message = createResponse(items.slice(0, 5), searchTerm, city);
         twiml.message(message);
       }
     } else {
-      message =
-        'Please respond with "Looking for a <item> in <your city name> " to receive a lit of local listings ';
-      console.log(message);
+      message = 'Please respond with "Looking for a <item> in <your city name> " to receive a lit of local listings ';
       twiml.message(message);
     }
     res.writeHead(200, {
