@@ -24,22 +24,39 @@ app.post('/sms', async (req, res) => {
         method: 'GET'
       });
 
-      const items = await response.json().slice(0, 5);
-      message = createResponse(items, 'chair', 'portland');
-      console.log(message);
+      if(!response.status === (200 || 304)){
+        console.log('hello')
+        message = 'Please enter a valid search term or city'
+        twiml.message(message);
+        res.writeHead(200, { 'Content-Type': 'text/xml' });
+        res.end(twiml.toString());
+       
+      } else {
+        
+        const items = await response.json();
+        console.log(items)
+        message = createResponse(items.slice(0, 5), 'chair', 'portland');
+        twiml.message(message);
+        res.writeHead(200, { 'Content-Type': 'text/xml' });
+        res.end(twiml.toString());
+      }
+
+     
+     
 
       
     } else {
       message = 'Please respond with "Looking for a <item> in <your city name> " to receive a lit of local listings '
+      console.log(message);
+      twiml.message(message);
+      res.writeHead(200, { 'Content-Type': 'text/xml' });
+      res.end(twiml.toString());
     }
 
 
     
 
-    
-    twiml.message(message);
-    res.writeHead(200, { 'Content-Type': 'text/xml' });
-    res.end(twiml.toString());
+   
   } 
   catch (error) {
     console.error(error);
