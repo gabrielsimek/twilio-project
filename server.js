@@ -14,7 +14,7 @@ const URL = 'https://project-scrape.herokuapp.com/api/v1/results';
 
 app.post('/sms', async (req, res) => {
   
-  const params = getSearchAndCity(req.body.Body)
+  const params = getSearchParams(req.body.Body)
   const twiml = new MessagingResponse();
  try {
   const response =  await fetch(`${URL}/${params[0]}/${params[1]}`, {
